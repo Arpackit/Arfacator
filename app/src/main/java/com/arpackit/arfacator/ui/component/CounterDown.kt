@@ -29,7 +29,7 @@ fun CounterDown(
     color: Color = MaterialTheme.colorScheme.onBackground,
     onTimeOver: () -> Unit
 ) {
-    var progress by remember { mutableStateOf(1f - elapsed / duration) }
+    var progress by remember { mutableStateOf(elapsed / duration) }
     val scope = rememberCoroutineScope()
     
     LaunchedEffect(Unit) {
