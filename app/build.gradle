@@ -1,0 +1,92 @@
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    //id 'kotlin-kapt'
+}
+
+android {
+    namespace 'com.arpackit.arfacator'
+    compileSdk 34
+    
+    defaultConfig {
+        applicationId "com.arpackit.arfacator"
+        minSdk 23
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+        
+        vectorDrawables { 
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    buildFeatures {
+        
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.3.2'
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+  kotlinOptions {
+    jvmTarget = "11"
+  }
+}
+
+dependencies {
+
+    implementation(platform("androidx.compose:compose-bom:2022.10.00"))
+
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.material3:material3:1.1.2")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
+    implementation("androidx.compose.ui:ui-graphics")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.activity:activity-compose:1.5.1")
+    
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
+    
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:2.7.5")
+    
+    /*
+    // Room
+    def room_version = "2.5.2"
+    implementation("androidx.room:room-ktx:$room_version")
+    implementation("androidx.room:room-runtime:$room_version")
+    kapt("androidx.room:room-compiler:$room_version") {
+        // exclude the sqlite-jdbc dependency from the room-compiler
+        exclude group: "org.xerial", module: "sqlite-jdbc"
+    }
+    kapt("org.xerial:sqlite-jdbc:3.44.0.0")
+    debugImplementation("com.infinum.dbinspector:dbinspector:5.4.9")
+    */
+    
+    // 1time
+    implementation("com.atlassian:onetime:2.0.2")
+    
+}
