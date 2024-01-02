@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
         
         setContent {
             MyComposeApplicationTheme {
-                //NavGraph(rememberNavController())
+                NavGraph(rememberNavController())
             }
         }
     }
