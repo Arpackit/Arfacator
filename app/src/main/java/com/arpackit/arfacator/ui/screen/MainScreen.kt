@@ -203,30 +203,20 @@ fun AccountsGrid(
             items = accounts,
             key = { it.id }
         ) { account ->
-            var confirmBeforeDeletion by remember { mutableStateOf(false) }
-        
-            if (confirmBeforeDeletion) {
-                ConfirmationDialog(
-                    title = stringResource(R.string.dialog_delete_title, account.name),
-                    text = stringResource(R.string.dialog_delete_text),
-                    confirmText = stringResource(R.string.delete),
-                    dismissText = stringResource(R.string.keep),
-                    onDismiss = { confirmBeforeDeletion = false }
-                ) {
-                    // Delete account
-                }
-            }
-           
+            var showDialog by remember { mutableStateOf(false) }
             var totp by remember { mutableStateOf("") }
-            totp = generateTotp(account.key)
+            
+            val updateTotp = { totp = generateTotp(account.key) }
+            
+            updateTotp()
             
             TotpSwipableCard(
                 name = account.name,
                 totp = totp,
                 description = account.description,
-                onTotpExpire = { totp = generateTotp(account.key) },
+                onTotpExpire = updateTotp,
                 onSwipedToStart = {
-                    confirmBeforeDeletion = true
+                    showDialog = true
                 },
                 onSwipedToEnd = {
                     onEditAccount(account.id)
@@ -235,6 +225,18 @@ fun AccountsGrid(
                     copyToClipboard(totp)
                 },
             )
+            
+            if (showDialog) {
+                ConfirmationDialog(
+                    title = stringResource(R.string.dialog_delete_title, account.name),
+                    text = stringResource(R.string.dialog_delete_text),
+                    confirmText = stringResource(R.string.delete),
+                    dismissText = stringResource(R.string.keep),
+                    onDismiss = { showDialog = false }
+                ) {
+                    // Delete account
+                }
+            }
         }
     }
 }
