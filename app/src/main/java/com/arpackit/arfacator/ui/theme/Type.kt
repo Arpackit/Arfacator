@@ -41,10 +41,10 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     ),
     titleLarge = TextStyle(
-        //fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Medium,
         fontSize = 22.sp,
         lineHeight = 28.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.5.sp
     ),
     labelSmall = TextStyle(
         fontWeight = FontWeight.Medium,
@@ -55,11 +55,12 @@ val Typography = Typography(
 ).defaultFontFamily(PoppinsFamily)
 
 val cardTitleStyle = Typography.titleLarge.copy(
-    fontSize = 15.sp,
+    fontWeight = FontWeight.Medium,
+    fontSize = 16.sp,
     letterSpacing = 0.5.sp,
 )
 
 val cardTotpStyle = Typography.titleLarge.copy(
-    fontWeight = FontWeight.Medium,
+    fontWeight = FontWeight.Normal,
     fontSize = 27.sp,
 )
