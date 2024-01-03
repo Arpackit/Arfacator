@@ -10,7 +10,7 @@
     <string name="delete">Delete</string>
     <string name="keep">Keep</string>
     <string name="empty_list">Your list is empty!</string>
-    <string name="dialog_delete_title">Delete %1%s?</string>
+    <string name="dialog_delete_title">Delete %s?</string>
     <string name="dialog_delete_text">The account will be deleted permanently, and this process is UNRECOVERABLE!</string>
     
     
