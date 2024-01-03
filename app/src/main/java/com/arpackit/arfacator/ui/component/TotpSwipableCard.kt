@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.shape.RoundedCornerShape
 
 import androidx.compose.material.icons.Icons.Outlined
 import androidx.compose.material.icons.outlined.Delete
@@ -44,8 +43,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-
-import java.util.Date
 
 import com.arpackit.arfacator.ui.theme.*
 import com.arpackit.arfacator.util.*
@@ -140,18 +137,12 @@ fun TotpSwipableCard(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        var elapsed = duration - Date().seconds % duration
-                        
                         CardText(
                             totp,
                             cardTotpStyle,
                             if (isTotpCopied) colorScheme.secondary else colorScheme.primary)
                         
-                        CounterDown(
-                            duration,
-                            elapsed,
-                            colorScheme.primary,
-                            onTotpExpire)
+                        CounterDown(duration, colorScheme.primary, onTotpExpire)
                     }
             
                     if (description.isNotBlank())
