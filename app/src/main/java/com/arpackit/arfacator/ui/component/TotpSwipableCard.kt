@@ -63,68 +63,74 @@ fun TotpSwipableCard(
     onSwipedToEnd: () -> Unit,
     onClick: () -> Unit,
 ) {
-    val dismissState = rememberDismissState()
-        
-    if (dismissState.isDismissed(DismissDirection.EndToStart)) {
-        onSwipedToStart()
-        LaunchedEffect(Unit) { dismissState.reset() }
-    } else if (dismissState.isDismissed(DismissDirection.StartToEnd)) {
-        onSwipedToEnd()
-        LaunchedEffect(Unit) { dismissState.reset() }
-    }
-    
-    SwipeToDismiss(
-        modifier = Modifier.clip(appRoundedShape),
-        state = dismissState,
-        directions = setOf(
-            DismissDirection.StartToEnd,
-            DismissDirection.EndToStart,
-        ),
-        background = {
-            val direction = dismissState.dismissDirection ?: return@SwipeToDismiss
-                    
-            val color by animateColorAsState(
-                when (dismissState.targetValue) {
-                    DismissValue.DismissedToStart -> Color.Red.copy(alpha = 0.8f)
-                    DismissValue.DismissedToEnd -> colorScheme.secondary.copy(alpha = 0.8f)
-                    DismissValue.Default -> colorScheme.background
-                }
-            )
-                    
-            val icon = when (direction) {
-                DismissDirection.StartToEnd -> Outlined.Edit
-                DismissDirection.EndToStart -> Outlined.Delete
-            }
-                    
-            val scale by animateFloatAsState(
-                if (dismissState.targetValue == DismissValue.Default) 0.5f
-                else 1.2f
-            )
-                    
-            val alignment = when (direction) {
-                DismissDirection.StartToEnd -> Alignment.CenterStart
-                DismissDirection.EndToStart -> Alignment.CenterEnd
-            }
-                    
-            Box(Modifier.fillMaxSize().background(color).padding(horizontal = 16.dp)) {
-                Icon(icon, "", Modifier.scale(scale).align(alignment), colorScheme.onBackground)
-            }
-        },
-        dismissContent = {
-            var isCopied by remember { mutableStateOf(false) }
+    var isTotpCopied by remember { mutableStateOf(false) }
             
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = appRoundedShape,
-                elevation = CardDefaults.cardElevation(4.dp),
-                onClick = {
-                    onClick()
-                    isCopied = true
-                    schedule(1) { isCopied = false }
-                },
-            ) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = appRoundedShape,
+        elevation = CardDefaults.cardElevation(1.dp),
+        onClick = {
+            onClick()
+            isTotpCopied = true
+            schedule(1) { isTotpCopied = false }
+        },
+    ) {
+    
+        val dismissState = rememberDismissState()
+        
+        with(dismissState) {
+            if (isDismissed(DismissDirection.EndToStart)) {
+                onSwipedToStart()
+                LaunchedEffect(Unit) { reset() }
+            } else if (isDismissed(DismissDirection.StartToEnd)) {
+                onSwipedToEnd()
+                LaunchedEffect(Unit) { reset() }
+            }
+        }
+    
+        SwipeToDismiss(
+            modifier = Modifier.clip(appRoundedShape),
+            state = dismissState,
+            directions = setOf(
+                DismissDirection.StartToEnd,
+                DismissDirection.EndToStart,
+            ),
+            background = {
+                val direction = dismissState.dismissDirection ?: return@SwipeToDismiss
+                    
+                val color by animateColorAsState(
+                    when (dismissState.targetValue) {
+                        DismissValue.DismissedToStart -> Color.Red.copy(alpha = 0.8f)
+                        DismissValue.DismissedToEnd -> colorScheme.secondary.copy(alpha = 0.8f)
+                        DismissValue.Default -> colorScheme.background
+                    }
+                )
+                    
+                val icon = when (direction) {
+                    DismissDirection.StartToEnd -> Outlined.Edit
+                    DismissDirection.EndToStart -> Outlined.Delete
+                }
+                    
+                val scale by animateFloatAsState(
+                    if (dismissState.targetValue == DismissValue.Default) 0f
+                    else 1.2f
+                )
+                    
+                val alignment = when (direction) {
+                    DismissDirection.StartToEnd -> Alignment.CenterStart
+                    DismissDirection.EndToStart -> Alignment.CenterEnd
+                }
+                    
+                Box(Modifier.fillMaxSize().background(color).padding(horizontal = 16.dp)) {
+                    Icon(icon, "", Modifier.scale(scale).align(alignment), WHITE)
+                }
+            },
+            dismissContent = {
                 Column(
-                    modifier = Modifier.fillMaxSize().padding(vertical = 8.dp, horizontal = 10.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(colorScheme.surface)
+                        .padding(vertical = 8.dp, horizontal = 10.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     CardText(name, cardTitleStyle)
@@ -139,7 +145,7 @@ fun TotpSwipableCard(
                         CardText(
                             totp,
                             cardTotpStyle,
-                            if (isCopied) colorScheme.secondary else colorScheme.primary)
+                            if (isTotpCopied) colorScheme.secondary else colorScheme.primary)
                         
                         CounterDown(
                             duration,
@@ -152,8 +158,9 @@ fun TotpSwipableCard(
                         CardText(description, typography.bodySmall, maxLines = 2)
                 }
             }
-        }
-    )
+        )
+        
+    }
 }
 
 
