@@ -10,19 +10,22 @@ import androidx.compose.runtime.setValue
 import com.arpackit.arfacator.data.Account
 
 
+lateinit var accountList: MutableList<Account> //by remember { mutableStateOf(listOf<Account>()) }
+    
 class MainViewModel : ViewModel() {
     
-    lateinit var accounts: MutableList<Account> //by remember { mutableStateOf(listOf<Account>()) }
+    var accounts: MutableList<Account>
     
     init {
         accounts = mutableListOf(
-            Account(1, "Github", "bskkjddkke", "Lorem ipsum dollor sumit"),
-            Account(2, "Telegram", "pwieidk"),
+            Account(1, "Github", "GJXQBQUHFFINHIVP", "Lorem ipsum dollor sumit"),
+            Account(2, "Test Arfacator result", "ar2fammaryasser"),
             Account(3, "Reddit", "nvmlxld", "Hello world to my app"),
             Account(4, "X", "hdisixdhsks"),
-            Account(5, "Github", "xafwfsfsg"),
+            Account(5, "LinkedIn", "G2jDqTzKVBFaH33cPbVw"),
+            Account(6, "Telegram", "p3oBPTayj92hs7DjG"),
         )
+        accountList = accounts
     }
-    
     
 }

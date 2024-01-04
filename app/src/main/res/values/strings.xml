@@ -12,6 +12,16 @@
     <string name="empty_list">Your list is empty!</string>
     <string name="dialog_delete_title">Delete %s?</string>
     <string name="dialog_delete_text">The account will be deleted permanently, and this process is UNRECOVERABLE!</string>
-    
+    <string name="paste">Paste</string>
+    <string name="save">Save</string>
+    <string name="add_account">Add account</string>
+    <string name="edit_account">Edit account</string>
+    <!-- Text Field -->
+    <string name="name">Name</string>
+    <string name="name_placeholder">Enter account name</string>
+    <string name="key">Secret key</string>
+    <string name="key_placeholder">Enter your shared secret key</string>
+    <string name="desc">Description (optional)</string>
+    <string name="desc_placeholder">Enter account description</string>
     
 </resources>

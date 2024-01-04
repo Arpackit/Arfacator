@@ -5,8 +5,12 @@ sealed class Screen(val route: String) {
     
     object Main: Screen("main_screen")
     
-    object Creator: Screen("creator_screen") {
-        fun routeWithId(id: Int) = "$route?id=$id"
+    object Form: Screen("form_screen") {
+        val ID_KEY = "id"
+        
+        fun fullRoute() = "$route?edit={$ID_KEY}"
+        
+        fun editRouteOfId(id: Int) = "$route?edit=$id"
     }
     
     object Preferences: Screen("preferences_screen")
