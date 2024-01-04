@@ -29,7 +29,7 @@ fun NavGraph(navController: NavHostController) {
                     //navController.navigate(Screen.Preferences.route)
                 },
                 onNavToAboutScreen = {
-                    //navController.navigate(Screen.About.route)
+                    navController.navigate(Screen.About.route)
                 },
             )
         }
@@ -49,6 +49,10 @@ fun NavGraph(navController: NavHostController) {
                     navController.popBackStack()
                 },
             )
+        }
+        
+        composable(route = Screen.About.route) {
+            AboutScreen()
         }
     }
 }

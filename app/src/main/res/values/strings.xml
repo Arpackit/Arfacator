@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Arfacator</string>
+    <string name="app_about">A two-factor authentication app that generates Time-based One Time Passwords (TOTP) based on your shared secret key.</string>
     <string name="copied">Copied</string>
     <string name="search">Search</string>
     <string name="preferences">Preferences</string>
