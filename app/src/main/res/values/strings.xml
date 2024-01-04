@@ -14,6 +14,8 @@
     <string name="dialog_delete_text">The account will be deleted permanently, and this process is UNRECOVERABLE!</string>
     <string name="paste">Paste</string>
     <string name="save">Save</string>
+    <string name="send">Send</string>
+    <string name="x_feedback">%s feedback</string>
     <string name="add_account">Add account</string>
     <string name="edit_account">Edit account</string>
     <!-- Text Field -->

@@ -1,6 +1,8 @@
 package com.arpackit.arfacator.ui.screen
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -157,6 +159,27 @@ fun MainScreenTopBar(
                     Icon(Outlined.Info, stringResource(R.string.about))
                 },
                 onClick = onNavToAboutScreen)
+                
+            val mailSubject = stringResource(R.string.x_feedback, stringResource(R.string.app_name))
+            
+            DropdownMenuItem(
+                text = {
+                    Text(stringResource(R.string.x_feedback, stringResource(R.string.send)))
+                },
+                leadingIcon = {
+                    Icon(Outlined.Email, stringResource(R.string.x_feedback))
+                },
+                onClick = {
+                    Intent(Intent.ACTION_SENDTO).run {
+                        type = "message/rfc822"
+                        data = Uri.parse("mailto:")
+                        
+                        putExtra(Intent.EXTRA_EMAIL, arrayOf("arpackit@gmail.com"))
+                        putExtra(Intent.EXTRA_SUBJECT, mailSubject)
+                        
+                        ctx.startActivity(Intent.createChooser(this, mailSubject))
+                    }
+                })
         }
     }
 }
