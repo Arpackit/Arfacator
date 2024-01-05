@@ -26,5 +26,17 @@
     <string name="key_placeholder">Enter your shared secret key</string>
     <string name="desc">Description (optional)</string>
     <string name="desc_placeholder">Enter account description</string>
+    <!-- Preferences -->
+    <string name="app_theme">App theme</string>
+    <string name="tap_to_apply_theme">Tap to apply %s theme</string>
+    <string name="theme_light">light</string>
+    <string name="theme_dark">dark</string>
+    <string name="font_family">Font family</string>
+    <string name="tap_to_apply_font">Tap to apply %s font family</string>
+    <string name="family_poppins">poppins</string>
+    <string name="family_delius">delius</string>
+    <string name="display_lang">Display languague</string>
+    <string name="tap_to_select_lang">Tap to select a languague from the list</string>
+    <string name="coming_soon">Coming soon</string>
     
 </resources>

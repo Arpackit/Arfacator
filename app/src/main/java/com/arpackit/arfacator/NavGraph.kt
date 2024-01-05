@@ -12,7 +12,13 @@ import com.arpackit.arfacator.ui.screen.*
 
 
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun NavGraph(
+    navController: NavHostController,
+    isDarkTheme: Boolean,
+    isPoppinsFont: Boolean,
+    onToggleTheme: () -> Unit,
+    onToggleFontFamily: () -> Unit
+) {
     NavHost(
         navController = navController, 
         startDestination = Screen.Main.route
@@ -26,12 +32,11 @@ fun NavGraph(navController: NavHostController) {
                     navController.navigate(Screen.Form.editRouteOfId(id))
                 },
                 onNavToPreferencesScreen = {
-                    //navController.navigate(Screen.Preferences.route)
+                    navController.navigate(Screen.Preferences.route)
                 },
                 onNavToAboutScreen = {
                     navController.navigate(Screen.About.route)
-                },
-            )
+                })
         }
         
         composable(
@@ -47,14 +52,24 @@ fun NavGraph(navController: NavHostController) {
                 curAccId = it.arguments?.getInt(Screen.Form.ID_KEY),
                 onNavBack = {
                     navController.popBackStack()
-                },
-            )
+                })
         }
         
         composable(route = Screen.About.route) {
             AboutScreen {
                 navController.popBackStack()
             }
+        }
+        
+        composable(route = Screen.Preferences.route) {
+            PreferencesScreen(
+                isDarkTheme = isDarkTheme,
+                isPoppinsFont = isPoppinsFont,
+                onToggleTheme = onToggleTheme,
+                onToggleFontFamily = onToggleFontFamily,
+                onNavBack = {
+                    navController.popBackStack()
+                })
         }
     }
 }
