@@ -45,14 +45,16 @@ fun NavGraph(navController: NavHostController) {
         ) {
             FormScreen(
                 curAccId = it.arguments?.getInt(Screen.Form.ID_KEY),
-                onFinish = {
+                onNavBack = {
                     navController.popBackStack()
                 },
             )
         }
         
         composable(route = Screen.About.route) {
-            AboutScreen()
+            AboutScreen {
+                navController.popBackStack()
+            }
         }
     }
 }

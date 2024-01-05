@@ -45,7 +45,7 @@ private lateinit var vm: FormViewModel
 @Composable
 fun FormScreen(
     curAccId: Int?, // Id of the to be editing account
-    onFinish: () -> Unit
+    onNavBack: () -> Unit
 ) {
     vm = viewModel()
     
@@ -73,7 +73,7 @@ fun FormScreen(
             }
         }
         
-        FormScreenTopBar {
+        FormScreenTopBar(onNavBack = onNavBack) {
             nameValue = nameValue.trim()
             keyValue = keyValue.trim()
             descValue = descValue.trim()
@@ -92,7 +92,7 @@ fun FormScreen(
                     // insert to db
                     vm.add(account)
                     
-                    onFinish()
+                    onNavBack()
                 }
             }
         }
@@ -139,8 +139,15 @@ fun FormScreen(
 
 
 @Composable
-fun FormScreenTopBar(onSave: () -> Unit) {
-    TopBar(stringResource(R.string.add_account)) {
+fun FormScreenTopBar(
+    onNavBack: () -> Unit,
+    onSave: () -> Unit,
+) {
+    TopBar(
+        title = stringResource(R.string.add_account),
+        backable = true,
+        onBack = onNavBack,
+    ) {
         IconButton(onClick = onSave) {
             Icon(
                 Outlined.Check,

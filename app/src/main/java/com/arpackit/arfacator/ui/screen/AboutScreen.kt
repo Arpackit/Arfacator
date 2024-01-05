@@ -27,13 +27,16 @@ import com.arpackit.arfacator.ui.component.TopBar
 
 
 @Composable
-fun AboutScreen() {
+fun AboutScreen(onNavBack: () -> Unit) {
     Box(Modifier
         .fillMaxSize()
         .background(colorScheme.background)
     ) {
     
-        TopBar(stringResource(R.string.about))
+        TopBar(
+            title = stringResource(R.string.about),
+            backable = true,
+            onBack = onNavBack)
            
         Column(
             modifier = Modifier

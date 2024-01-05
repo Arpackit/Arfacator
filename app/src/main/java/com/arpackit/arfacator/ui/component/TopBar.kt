@@ -3,8 +3,13 @@ package com.arpackit.arfacator.ui.component
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 
+import androidx.compose.material.icons.Icons.Outlined
+import androidx.compose.material.icons.outlined.ArrowBack
+
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -23,6 +28,8 @@ import com.arpackit.arfacator.R
 @Composable
 fun TopBar(
     title: String = stringResource(R.string.app_name),
+    backable: Boolean = false,
+    onBack: () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     TopAppBar(
@@ -32,8 +39,14 @@ fun TopBar(
         actions = actions,
         modifier = Modifier.clip(RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 8.dp)),
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary
-        )
+            containerColor = colorScheme.primary,
+            titleContentColor = colorScheme.onPrimary
+        ),
+        navigationIcon = {
+            if (backable)
+                IconButton(onClick = onBack) {
+                    Icon(Outlined.ArrowBack, "", tint = colorScheme.onPrimary)
+                }
+        },
     )
 }
