@@ -130,7 +130,7 @@ fun TotpSwipableCard(
                         .padding(vertical = 8.dp, horizontal = 10.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
-                    CardText(name, cardTitleStyle)
+                    CardText(name, typography.titleSmall)
             
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -139,7 +139,7 @@ fun TotpSwipableCard(
                     ) {
                         CardText(
                             totp,
-                            cardTotpStyle,
+                            typography.headlineMedium,
                             if (isTotpCopied) colorScheme.secondary else colorScheme.primary)
                         
                         CounterDown(duration, colorScheme.primary, onTotpExpire)
