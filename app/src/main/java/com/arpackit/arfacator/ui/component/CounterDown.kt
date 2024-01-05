@@ -33,7 +33,7 @@ fun CounterDown(
     LaunchedEffect(Unit) {
         scheduleAtFixedRate(0, 1) {
             progress = calcProgress()
-            if (progress <= 0) onTimeOver()
+            if (progress == 1f) onTimeOver()
         }
     }
     
