@@ -26,6 +26,9 @@ import androidx.compose.ui.unit.dp
 import com.arpackit.arfacator.R
 import com.arpackit.arfacator.ui.component.TopBar
 import com.arpackit.arfacator.ui.component.Preference
+import com.arpackit.arfacator.ui.icon.Contrast
+import com.arpackit.arfacator.ui.icon.TypeSpecimen
+import com.arpackit.arfacator.ui.icon.Language
 import com.arpackit.arfacator.util.showToast
 
 
@@ -56,7 +59,7 @@ fun PreferencesScreen(
         ) {
             
             Preference(
-                icon = Outlined.Settings,
+                icon = Contrast(),
                 title = stringResource(R.string.app_theme),
                 subTitle = stringResource(R.string.tap_to_apply_theme, 
                     stringResource(
@@ -66,7 +69,7 @@ fun PreferencesScreen(
                 onClick = onToggleTheme)
                 
             Preference(
-                icon = Outlined.Settings,
+                icon = TypeSpecimen(),
                 title = stringResource(R.string.font_family),
                 subTitle = stringResource(R.string.tap_to_apply_font, 
                     stringResource(
@@ -78,7 +81,7 @@ fun PreferencesScreen(
             val coming_soon = stringResource(R.string.coming_soon)
             
             Preference(
-                icon = Outlined.Settings,
+                icon = Language(),
                 title = stringResource(R.string.display_lang),
                 subTitle = stringResource(R.string.tap_to_select_lang),
             ) {
