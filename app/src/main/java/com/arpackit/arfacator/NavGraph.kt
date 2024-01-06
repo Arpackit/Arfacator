@@ -15,7 +15,7 @@ import com.arpackit.arfacator.ui.screen.*
 fun NavGraph(
     navController: NavHostController,
     isDarkTheme: Boolean,
-    isPoppinsFont: Boolean,
+    fontId: Int,
     onToggleTheme: () -> Unit,
     onToggleFontFamily: () -> Unit
 ) {
@@ -64,7 +64,7 @@ fun NavGraph(
         composable(route = Screen.Preferences.route) {
             PreferencesScreen(
                 isDarkTheme = isDarkTheme,
-                isPoppinsFont = isPoppinsFont,
+                fontId = fontId,
                 onToggleTheme = onToggleTheme,
                 onToggleFontFamily = onToggleFontFamily,
                 onNavBack = {

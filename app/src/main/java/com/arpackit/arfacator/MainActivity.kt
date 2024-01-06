@@ -10,10 +10,9 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 
-import androidx.compose.ui.text.font.FontFamily
+import androidx.lifecycle.lifecycleScope
 
 import androidx.navigation.compose.rememberNavController
 
@@ -21,8 +20,6 @@ import kotlinx.coroutines.launch
 
 import com.arpackit.arfacator.data.repository.PrefsDataStoreRepository
 import com.arpackit.arfacator.ui.theme.MyComposeApplicationTheme
-import com.arpackit.arfacator.ui.theme.PoppinsFamily
-import com.arpackit.arfacator.ui.theme.DeliusFamily
 
 
 class MainActivity : ComponentActivity() {
@@ -36,34 +33,28 @@ class MainActivity : ComponentActivity() {
             val isDark = isSystemInDarkTheme()
             
             var applyDarkTheme by remember { mutableStateOf(isDark) }
-            var applyPoppinsFont by remember { mutableStateOf(true) }
-            var fontFamily by remember { mutableStateOf<FontFamily>(PoppinsFamily) }
+            var fontId by remember { mutableStateOf(0) }
             
-            val updateFamily = { fontFamily = if (applyPoppinsFont) PoppinsFamily else DeliusFamily }
-            val coScope = rememberCoroutineScope()
-            
-            coScope.launch {
+            lifecycleScope.launch {
                 applyDarkTheme = prefsRepo.getIsDarkTheme(applyDarkTheme)
-                applyPoppinsFont = prefsRepo.getIsPoppinsFont(applyPoppinsFont)
-                updateFamily()
+                fontId = prefsRepo.getFontId(fontId)
             }
             
-            MyComposeApplicationTheme(applyDarkTheme, fontFamily) {
+            MyComposeApplicationTheme(applyDarkTheme, fontId) {
                 NavGraph(
                     navController = rememberNavController(),
                     isDarkTheme = applyDarkTheme,
-                    isPoppinsFont = applyPoppinsFont,
+                    fontId = fontId,
                     onToggleTheme = {
                         applyDarkTheme = !applyDarkTheme
-                        coScope.launch {
+                        lifecycleScope.launch {
                             prefsRepo.putIsDarkTheme(applyDarkTheme)
                         }
                     },
                     onToggleFontFamily = {
-                        applyPoppinsFont = !applyPoppinsFont
-                        updateFamily()
-                        coScope.launch {
-                            prefsRepo.putIsPoppinsFont(applyPoppinsFont)
+                        fontId = if (fontId == 0) 1 else 0
+                        lifecycleScope.launch {
+                            prefsRepo.putFontId(fontId)
                         }
                     })
             }

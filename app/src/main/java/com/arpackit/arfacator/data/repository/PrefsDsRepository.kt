@@ -33,14 +33,14 @@ class PrefsDataStoreRepository(context: Context) {
             value)
     
     
-    suspend fun getIsPoppinsFont(defaultValue: Boolean) = 
+    suspend fun getFontId(defaultValue: Int) = 
         prefsHelper.getFirstPref(
-            PrefsDataStoreKeys.IS_POPPINS_FONT_KEY,
+            PrefsDataStoreKeys.FONT_ID_KEY,
             defaultValue)
     
-    suspend fun putIsPoppinsFont(value: Boolean) = 
+    suspend fun putFontId(value: Int) = 
         prefsHelper.putPref(
-            PrefsDataStoreKeys.IS_POPPINS_FONT_KEY,
+            PrefsDataStoreKeys.FONT_ID_KEY,
             value)
     
 }

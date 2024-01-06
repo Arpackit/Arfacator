@@ -1,6 +1,7 @@
 package com.arpackit.arfacator.data.prefsds
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
 
 
 object PrefsDataStoreKeys {
@@ -11,7 +12,7 @@ object PrefsDataStoreKeys {
     val IS_DARK_THEME_KEY = 
         booleanPreferencesKey("IS_DARK_THEME")
         
-    val IS_POPPINS_FONT_KEY = 
-        booleanPreferencesKey("IS_POPPINS_FONT")
+    val FONT_ID_KEY = 
+        intPreferencesKey("FONT_ID")
         
 }

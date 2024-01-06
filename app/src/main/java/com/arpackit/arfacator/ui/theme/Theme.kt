@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.text.font.FontFamily
 
 import androidx.core.view.WindowCompat
 
@@ -55,7 +54,7 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun MyComposeApplicationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    fontFamily: FontFamily = PoppinsFamily,
+    fontId: Int = 0,
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
@@ -84,6 +83,7 @@ fun MyComposeApplicationTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography.defaultFontFamily(fontFamily),
+        typography = Typography
+            .defaultFontFamily(supportedFonts[fontId]),
         content = content)
 }

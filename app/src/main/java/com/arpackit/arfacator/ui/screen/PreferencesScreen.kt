@@ -35,7 +35,7 @@ import com.arpackit.arfacator.util.showToast
 @Composable
 fun PreferencesScreen(
     isDarkTheme: Boolean,
-    isPoppinsFont: Boolean,
+    fontId: Int,
     onToggleTheme: () -> Unit,
     onToggleFontFamily: () -> Unit,
     onNavBack: () -> Unit
@@ -73,7 +73,7 @@ fun PreferencesScreen(
                 title = stringResource(R.string.font_family),
                 subTitle = stringResource(R.string.tap_to_apply_font, 
                     stringResource(
-                        if (isPoppinsFont) R.string.family_delius 
+                        if (fontId == 0) R.string.family_delius 
                         else R.string.family_poppins
                     )),
                 onClick = onToggleFontFamily)

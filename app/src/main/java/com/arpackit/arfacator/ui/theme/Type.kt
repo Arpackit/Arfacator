@@ -30,8 +30,10 @@ fun Typography.defaultFontFamily(fontFamily: FontFamily): Typography {
     )
 }
 
-val DeliusFamily = FontFamily(Font(R.font.delius))
-val PoppinsFamily = FontFamily(Font(R.font.poppins))
+val supportedFonts = arrayOf(
+    FontFamily(Font(R.font.poppins)),
+    FontFamily(Font(R.font.delius))
+)
 
 val Typography = Typography(
     bodyLarge = TextStyle(
