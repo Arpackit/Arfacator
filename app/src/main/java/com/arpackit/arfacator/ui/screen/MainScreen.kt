@@ -32,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 
 import androidx.compose.ui.Alignment
@@ -45,8 +46,11 @@ import androidx.compose.ui.unit.dp
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 
+import kotlinx.coroutines.launch
+
 import com.arpackit.arfacator.R
 import com.arpackit.arfacator.data.Account
+import com.arpackit.arfacator.data.repository.PrefsDataStoreRepository
 import com.arpackit.arfacator.ui.component.ConfirmationDialog
 import com.arpackit.arfacator.ui.component.FAB
 import com.arpackit.arfacator.ui.component.TopBar
@@ -88,13 +92,25 @@ fun MainScreen(
             var isLoading by remember { mutableStateOf(true) }
             var viewAsGrid by remember { mutableStateOf(true) }
             var isEmpty = vm.accounts.isEmpty()
-                        
-            schedule(1) { isLoading = false }
+            
+            val coScope = rememberCoroutineScope()
+            val prefsRepo = PrefsDataStoreRepository(ctx)
+            
+            schedule(500) { isLoading = false }
+            
+            coScope.launch {
+                viewAsGrid = prefsRepo.getViewAsGrid(viewAsGrid)
+            }
             
             MainScreenTopBar(
                 onNavToPreferencesScreen = onNavToPreferencesScreen,
                 onNavToAboutScreen = onNavToAboutScreen,
-                onSwitchView = { viewAsGrid = it },
+                onSwitchView = { 
+                    viewAsGrid = it
+                    coScope.launch {
+                        prefsRepo.putViewAsGrid(viewAsGrid)
+                    }
+                },
             )
             
             when {
