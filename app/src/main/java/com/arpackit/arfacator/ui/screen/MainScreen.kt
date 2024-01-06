@@ -47,10 +47,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 import com.arpackit.arfacator.R
 import com.arpackit.arfacator.data.Account
-import com.arpackit.arfacator.ui.component.*
-import com.arpackit.arfacator.ui.icon.*
+import com.arpackit.arfacator.ui.component.ConfirmationDialog
+import com.arpackit.arfacator.ui.component.FAB
+import com.arpackit.arfacator.ui.component.TopBar
+import com.arpackit.arfacator.ui.component.TotpSwipableCard
+import com.arpackit.arfacator.ui.icon.GridView
+import com.arpackit.arfacator.ui.icon.ViewAgenda
 import com.arpackit.arfacator.ui.viewmodel.MainViewModel
-import com.arpackit.arfacator.util.*
+import com.arpackit.arfacator.util.generateTotp
+import com.arpackit.arfacator.util.schedule
+import com.arpackit.arfacator.util.showToast
 
 
 lateinit var ctx: Context
@@ -137,7 +143,7 @@ fun MainScreenTopBar(
                 stringResource(R.string.more),
                 tint = colorScheme.onPrimary)
         }
-    
+        
         DropdownMenu(
             expanded = isMenuExpanded,
             onDismissRequest = { isMenuExpanded = false }
@@ -224,7 +230,7 @@ fun AccountsGrid(
     ) {
         items(
             items = accounts,
-            key = { it.id }
+            key = { System.nanoTime() } //it.id }
         ) { account ->
             var showDialog by remember { mutableStateOf(false) }
             var totp by remember { mutableStateOf("") }
