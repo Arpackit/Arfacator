@@ -103,10 +103,11 @@ fun MainScreen(
             }
             
             MainScreenTopBar(
+                viewAsGrid = viewAsGrid,
                 onNavToPreferencesScreen = onNavToPreferencesScreen,
                 onNavToAboutScreen = onNavToAboutScreen,
                 onSwitchView = { 
-                    viewAsGrid = it
+                    viewAsGrid = !viewAsGrid
                     coScope.launch {
                         prefsRepo.putViewAsGrid(viewAsGrid)
                     }
@@ -127,15 +128,15 @@ fun MainScreen(
 
 @Composable
 fun MainScreenTopBar(
+    viewAsGrid: Boolean,
     onNavToPreferencesScreen: () -> Unit,
     onNavToAboutScreen: () -> Unit,
-    onSwitchView: (Boolean) -> Unit,
+    onSwitchView: () -> Unit,
     onSearch: () -> Unit = {},
 ) {
     TopBar {
         var isMenuExpanded by remember { mutableStateOf(false) }
-        var viewAsGrid by remember { mutableStateOf(true) }
-    
+        
         IconButton(onClick = onSearch) {
             Icon(
                 Outlined.Search,
@@ -143,10 +144,7 @@ fun MainScreenTopBar(
                 tint = colorScheme.onPrimary)
         }
         
-        IconButton(onClick = {
-            viewAsGrid = !viewAsGrid
-            onSwitchView(viewAsGrid)
-        }) {
+        IconButton(onClick = onSwitchView) {
             Icon(
                 if (viewAsGrid) ViewAgenda() else GridView(),
                 stringResource(R.string.switch_view),
