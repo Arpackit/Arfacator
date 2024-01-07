@@ -32,14 +32,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 import com.arpackit.arfacator.R
-import com.arpackit.arfacator.data.Account
+import com.arpackit.arfacator.data.model.Account
 import com.arpackit.arfacator.ui.component.FormTextField
 import com.arpackit.arfacator.ui.component.TopBar
-import com.arpackit.arfacator.ui.viewmodel.FormViewModel
+import com.arpackit.arfacator.ui.viewmodel.FormScreenViewModel
 import com.arpackit.arfacator.util.showToast
-
-
-private lateinit var vm: FormViewModel
 
 
 @Composable
@@ -47,7 +44,7 @@ fun FormScreen(
     curAccId: Int?, // Id of the to be editing account
     onNavBack: () -> Unit
 ) {
-    vm = viewModel()
+    val vm: FormScreenViewModel = viewModel(factory = FormScreenViewModel.Factory)
     
     Column(Modifier
         .fillMaxSize()
@@ -62,13 +59,15 @@ fun FormScreen(
         )}
         
         LaunchedEffect(Unit) {
-            if (curAccId != -1) {
-                // read from db
-                account = vm.find(curAccId!! - 1)
-                account.run {
-                    nameValue = name
-                    keyValue = key
-                    descValue = description
+            curAccId?.run {
+                if (this != -1) 
+                    vm.getAccountById(this).collect {
+                        account = it
+                        account.run {
+                            nameValue = name
+                            keyValue = key
+                            descValue = description
+                        }
                 }
             }
         }
@@ -89,8 +88,7 @@ fun FormScreen(
                         description = descValue
                     }
                     
-                    // insert to db
-                    vm.add(account)
+                    vm.saveAccount(account)
                     
                     onNavBack()
                 }

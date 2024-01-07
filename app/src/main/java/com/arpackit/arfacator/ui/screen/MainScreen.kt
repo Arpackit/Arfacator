@@ -34,6 +34,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,7 +50,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 
 import com.arpackit.arfacator.R
-import com.arpackit.arfacator.data.Account
+import com.arpackit.arfacator.data.model.Account
 import com.arpackit.arfacator.data.repository.PrefsDataStoreRepository
 import com.arpackit.arfacator.ui.component.ConfirmationDialog
 import com.arpackit.arfacator.ui.component.FAB
@@ -57,7 +58,7 @@ import com.arpackit.arfacator.ui.component.TopBar
 import com.arpackit.arfacator.ui.component.TotpSwipableCard
 import com.arpackit.arfacator.ui.icon.GridView
 import com.arpackit.arfacator.ui.icon.ViewAgenda
-import com.arpackit.arfacator.ui.viewmodel.MainViewModel
+import com.arpackit.arfacator.ui.viewmodel.MainScreenViewModel
 import com.arpackit.arfacator.util.generateTotp
 import com.arpackit.arfacator.util.schedule
 import com.arpackit.arfacator.util.showToast
@@ -67,7 +68,7 @@ lateinit var ctx: Context
 lateinit var clipboardManager: ClipboardManager
 lateinit var COPIED_STRING_RES: String
 
-private lateinit var vm: MainViewModel
+private lateinit var vm: MainScreenViewModel
 
 
 @Composable
@@ -81,17 +82,18 @@ fun MainScreen(
     clipboardManager = LocalClipboardManager.current
     COPIED_STRING_RES = stringResource(R.string.copied)
     
-    vm = viewModel()
+    vm = viewModel(factory = MainScreenViewModel.Factory)
     
     Box(Modifier
         .fillMaxSize()
         .background(colorScheme.background)
     ) {
+        val accounts = vm.accounts.observeAsState()
         
         Column(Modifier.fillMaxSize()) {
             var isLoading by remember { mutableStateOf(true) }
             var viewAsGrid by remember { mutableStateOf(true) }
-            var isEmpty = vm.accounts.isEmpty()
+            var isEmpty = accounts.value?.isEmpty() ?: true
             
             val coScope = rememberCoroutineScope()
             val prefsRepo = PrefsDataStoreRepository(ctx)
@@ -104,6 +106,7 @@ fun MainScreen(
             
             MainScreenTopBar(
                 viewAsGrid = viewAsGrid,
+                hideViewIcon = isEmpty,
                 onNavToPreferencesScreen = onNavToPreferencesScreen,
                 onNavToAboutScreen = onNavToAboutScreen,
                 onSwitchView = { 
@@ -116,7 +119,7 @@ fun MainScreen(
             
             when {
                 isLoading || isEmpty -> LoadingOrEmpty(isLoading)
-                else -> AccountsGrid(viewAsGrid, Modifier.weight(1f), vm.accounts, onEditAccount)
+                else -> AccountsGrid(viewAsGrid, Modifier.weight(1f), accounts.value!!, onEditAccount)
             }
         }
         
@@ -129,6 +132,7 @@ fun MainScreen(
 @Composable
 fun MainScreenTopBar(
     viewAsGrid: Boolean,
+    hideViewIcon: Boolean,
     onNavToPreferencesScreen: () -> Unit,
     onNavToAboutScreen: () -> Unit,
     onSwitchView: () -> Unit,
@@ -144,7 +148,7 @@ fun MainScreenTopBar(
                 tint = colorScheme.onPrimary)
         }
         
-        IconButton(onClick = onSwitchView) {
+        if (!hideViewIcon) IconButton(onClick = onSwitchView) {
             Icon(
                 if (viewAsGrid) ViewAgenda() else GridView(),
                 stringResource(R.string.switch_view),
@@ -244,7 +248,7 @@ fun AccountsGrid(
     ) {
         items(
             items = accounts,
-            key = { System.nanoTime() } //it.id }
+            key = { System.nanoTime() }
         ) { account ->
             var showDialog by remember { mutableStateOf(false) }
             var totp by remember { mutableStateOf("") }
@@ -277,7 +281,7 @@ fun AccountsGrid(
                     dismissText = stringResource(R.string.keep),
                     onDismiss = { showDialog = false }
                 ) {
-                    // Delete account
+                    vm.deleteAccount(account)
                 }
             }
         }

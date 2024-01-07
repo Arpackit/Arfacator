@@ -1,31 +1,56 @@
 package com.arpackit.arfacator.ui.viewmodel
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 
-import com.arpackit.arfacator.data.Account
+import kotlinx.coroutines.launch
+
+import com.arpackit.arfacator.data.model.Account
+import com.arpackit.arfacator.data.repository.AccountsDatabaseRepository
 
 
-lateinit var accountList: MutableList<Account> //by remember { mutableStateOf(listOf<Account>()) }
+class MainScreenViewModel(private val app: Application) : AndroidViewModel(app) {
     
-class MainViewModel : ViewModel() {
+    private val repo = AccountsDatabaseRepository
+        .build(app.applicationContext)
     
-    var accounts: MutableList<Account>
+    private val _accounts = MutableLiveData<List<Account>>()
+    val accounts: LiveData<List<Account>> get() = _accounts
     
-    init {
-        accounts = mutableListOf(
-            Account(1, "Github", "GJXQBQUHFFINHIVP", "Lorem ipsum dollor sumit"),
-            Account(2, "Test Arfacator result", "ar2fammaryasser"),
-            Account(3, "Reddit", "nvmlxld", "Hello world to my app"),
-            Account(4, "X", "hdisixdhsks"),
-            Account(5, "LinkedIn", "G2jDqTzKVBFaH33cPbVw"),
-            Account(6, "Telegram", "p3oBPTayj92hs7DjG"),
-        )
-        accountList = accounts
+    
+    init { fetchAccounts() }
+    
+    
+    fun fetchAccounts() {
+        viewModelScope.launch {
+            repo.getAllAccounts().collect {
+                _accounts.postValue(it)
+            }
+        }
     }
     
+    fun deleteAccount(account: Account) {
+        viewModelScope.launch {
+            repo.deleteAccount(account)
+        }
+    }
+    
+    
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val app = (this[APPLICATION_KEY] as Application)
+                
+                MainScreenViewModel(app)
+            }
+        }
+    }
 }

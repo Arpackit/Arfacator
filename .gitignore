@@ -89,4 +89,4 @@ lint/tmp/
 # My Util
 app/src/main/java/com/arpackit/arfacator/_*
 autoCommiter.sh
-
+*.txt
