@@ -88,17 +88,17 @@ fun MainScreen(
         .fillMaxSize()
         .background(colorScheme.background)
     ) {
-        val accounts = vm.accounts.observeAsState()
         
         Column(Modifier.fillMaxSize()) {
-            var isLoading by remember { mutableStateOf(true) }
-            var viewAsGrid by remember { mutableStateOf(true) }
+            val loading = vm.loading.observeAsState()
+            val accounts = vm.accounts.observeAsState()
+            
+            var isLoading = loading.value ?: true
             var isEmpty = accounts.value?.isEmpty() ?: true
+            var viewAsGrid by remember { mutableStateOf(true) }
             
             val coScope = rememberCoroutineScope()
             val prefsRepo = PrefsDataStoreRepository(ctx)
-            
-            schedule(500) { isLoading = false }
             
             coScope.launch {
                 viewAsGrid = prefsRepo.getViewAsGrid(viewAsGrid)

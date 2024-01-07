@@ -25,14 +25,20 @@ class MainScreenViewModel(private val app: Application) : AndroidViewModel(app) 
     private val _accounts = MutableLiveData<List<Account>>()
     val accounts: LiveData<List<Account>> get() = _accounts
     
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> get() = _loading
+    
     
     init { fetchAccounts() }
     
     
     fun fetchAccounts() {
+        _loading.postValue(true)
+        
         viewModelScope.launch {
             repo.getAllAccounts().collect {
                 _accounts.postValue(it)
+                _loading.postValue(false)
             }
         }
     }
